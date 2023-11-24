@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fourier Series Plotter</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Fourier Series Plotter</h1>
+    <form action="/plot" method="post">
+        <label for="n_terms">Number of Terms:</label>
+        <input type="number" id="n_terms" name="n_terms" min="1" value="5">
+        <input type="submit" value="Plot">
+    </form>
+    <div id="plot"></div>
+    <script>
+        const form = document.querySelector('form');
+        form.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const formData = new FormData(form);
+            const response = await fetch('/plot', {
+                method: 'POST',
+                body: formData
+            });
+            const image = await response.text();
+            document.getElementById('plot').innerHTML = image;
+        });
+    </script>
+</body>
+</html>
